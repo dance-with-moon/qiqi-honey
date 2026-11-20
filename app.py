@@ -234,7 +234,7 @@ with st.sidebar:
         else:
             st.toast("现在就是新会话呀～")
 
-    st.markdown("**会话历史**")
+    st.markdown("💌会话历史💌")
     sessions = load_sessions()
     if not sessions:
         st.caption("还没有会话记录～")
@@ -300,8 +300,8 @@ with st.sidebar:
 
 
 # ------------------------------------------------------------------ 聊天区
-st.title("AI伴侣助手")
-st.caption("欢迎使用～有什么想说的都可以告诉我")
+st.title("💗AI伴侣助手💗")
+st.caption("💕我是您的情感专家，有什么想告诉我的吗💕")
 st.caption(f"当前会话：{st.session_state.current_session}")
 
 for message in st.session_state.messages:
