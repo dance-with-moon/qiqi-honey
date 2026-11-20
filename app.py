@@ -5,7 +5,7 @@
     streamlit run app.py
 
 线上部署：
-    见项目根目录的《部署指南.md》，或把这个文件夹里的文件上传到 Hugging Face Spaces。
+    见项目根目录的《部署指南.md》（Streamlit Community Cloud 路线）。
 
 和本地版的区别（都是为了放到公网上用）：
     1. API Key 改成优先读平台 Secrets（st.secrets），其次读环境变量，绝不写死在代码里
@@ -22,7 +22,7 @@ import hashlib
 import hmac
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import streamlit as st
@@ -36,6 +36,11 @@ SESSION_DIR = BASE_DIR / "sessions"
 
 MAX_HISTORY = 24    # 每次请求最多带最近 N 条历史给模型（省钱 + 防上下文过长）
 MAX_INPUT = 600     # 单条消息最大字数
+
+# 北京时间。云服务器（和部分电脑）的时区是 UTC，比北京慢 8 小时，
+# 所以这里显式指定，不用 datetime.now() 的“机器本地时间”。
+# 中国自 1991 年起不实行夏令时，固定 UTC+8 就是准确的，也不需要装 tzdata。
+CST = timezone(timedelta(hours=8))
 
 
 def get_secret(key, default=None):
@@ -129,7 +134,8 @@ store = SessionStore(
 
 
 def session_name() -> str:
-    return datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    """会话名 = 北京时间的时间戳，顺便也当排序用的主键。"""
+    return datetime.now(CST).strftime("%Y-%m-%d_%H-%M-%S")
 
 
 def save_session() -> None:
