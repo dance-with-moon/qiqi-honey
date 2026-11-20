@@ -222,7 +222,7 @@ if "store_error" not in st.session_state:
 
 # ------------------------------------------------------------------ 侧边栏
 with st.sidebar:
-    st.subheader("琦琦宝宝的伴侣信息")
+    st.subheader("💖💖琦琦宝宝的伴侣💖💖")
 
     if st.button("新建会话", width="stretch", icon="💞"):
         if st.session_state.messages:
